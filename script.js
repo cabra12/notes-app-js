@@ -14,3 +14,13 @@ closeBtn.addEventListener('click', () => {
     popUp.close();
 });
 
+//CRUD Operations 
+
+//Create (Person A)
+
+//Read (Person A)
+
+//Update/Edit (Person B)
+
+//Delete (Person B)
+
