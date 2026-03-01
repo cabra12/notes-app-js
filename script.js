@@ -2,7 +2,9 @@
 
 const addBtn = document.getElementById('addNoteBtn');
 const popUp = document.getElementById('notePopUp');
-const closeBtn = document.getElementById('closeBtn')
+const closeBtn = document.getElementById('closeBtn');
+
+let notes = [];
 
 addBtn.addEventListener('click', ()=> {
     popUp.showModal();
