@@ -27,3 +27,18 @@ ul, ol {
 #notePopUp {
     margin: auto;
 }
+
+#notesContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem;
+}
+
+/* class already created in javascript */
+.card {
+  background-color: #faa2a2;
+  border-radius: 15px;
+  max-height: 10rem;
+  max-width: 30rem;
+  padding: 0.5rem;
+}
