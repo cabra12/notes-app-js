@@ -28,12 +28,16 @@ submitNoteBtn.addEventListener('click', () => {
     if(titleInput !== "" && contentInput !== "") {
         notes.unshift({noteTitle: titleInput.trim(), noteContent: contentInput.trim()});
         
-        const cardItem = `<div class = "card">
-            <h3>${titleInput.trim()}</h3>
-            <p>${contentInput.trim()}</p>
-        </div>`
+        //converts items in array for HTML rendering, using map to simplify 
+        //.join() to make array that map produces into a string for innerHTML
+        const cardItem = notes.map(item => {
+        return `<div class = "card">
+            <h3>${item.noteTitle}</h3>
+            <p>${item.noteContent}</p>
+        </div>`;
+        }).join('');
 
-        notesContainer.innerHTML += cardItem;
+        notesContainer.innerHTML = cardItem;
         noteTitle.value = '';
         noteContent.value = '';
         
