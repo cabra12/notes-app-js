@@ -1,44 +1,302 @@
-* {
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=DM+Sans:wght@300;400;500&display=swap');
+
+:root {
+  --bg: #f5f0e8;
+  --surface: #fffdf8;
+  --surface-2: #f0ebe0;
+  --ink: #1a1612;
+  --ink-muted: #7a6f62;
+  --accent: #c84b2f;
+  --accent-hover: #a83a20;
+  --border: #d8d0c4;
+  --shadow: rgba(26, 22, 18, 0.08);
+  --shadow-lg: rgba(26, 22, 18, 0.18);
+  --radius: 12px;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 }
 
-html, body {
+body {
+  font-family: 'DM Sans', sans-serif;
+  background-color: var(--bg);
+  color: var(--ink);
   min-height: 100vh;
-  line-height: 1.5;
-  font-family: sans-serif;
-  font-size: 100%;
+  background-image:
+    radial-gradient(circle at 20% 20%, rgba(200, 75, 47, 0.04) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(200, 75, 47, 0.03) 0%, transparent 40%);
 }
 
-img {
-  display: block;
-  max-width: 100%;
+/* ── Header ── */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28px 48px;
+  background: var(--surface);
+  border-bottom: 1.5px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  box-shadow: 0 2px 12px var(--shadow);
 }
 
-input, button, select, textarea {
-  font: inherit;
+header h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--ink);
 }
 
-ul, ol {
-  list-style: none;
+header h1::after {
+  content: '.';
+  color: var(--accent);
 }
 
-#notePopUp {
-    margin: auto;
+#addNoteBtn {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #fff;
+  background: var(--accent);
+  border: none;
+  padding: 10px 22px;
+  border-radius: 8px;
+  cursor: pointer;
+  letter-spacing: 0.01em;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(200, 75, 47, 0.3);
 }
 
+#addNoteBtn:hover {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(200, 75, 47, 0.4);
+}
+
+#addNoteBtn:active {
+  transform: translateY(0);
+}
+
+/* ── Notes Grid ── */
 #notesContainer {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+  padding: 48px;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
-/* class already created in javascript */
-.card {
-  background-color: #faa2a2;
-  border-radius: 15px;
-  max-height: 10rem;
-  max-width: 30rem;
-  padding: 0.5rem;
+/* Note cards (added by JS) */
+.note-card {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  box-shadow: 0 2px 8px var(--shadow);
+  transition: transform 0.2s, box-shadow 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.note-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--accent);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.note-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px var(--shadow-lg);
+}
+
+.note-card:hover::before {
+  opacity: 1;
+}
+
+.note-card h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin-bottom: 10px;
+  color: var(--ink);
+}
+
+.note-card p {
+  font-size: 0.875rem;
+  color: var(--ink-muted);
+  line-height: 1.65;
+}
+
+/* ── Dialog ── */
+#notePopUp {
+  border: none;
+  border-radius: 16px;
+  padding: 0;
+  width: min(520px, 90vw);
+  background: var(--surface);
+  box-shadow: 0 24px 64px rgba(26, 22, 18, 0.22);
+  overflow: hidden;
+  animation: dialogIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+#notePopUp::backdrop {
+  background: rgba(26, 22, 18, 0.45);
+  backdrop-filter: blur(3px);
+}
+
+@keyframes dialogIn {
+  from { opacity: 0; transform: scale(0.95) translateY(8px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.dialogHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 28px 20px;
+  border-bottom: 1.5px solid var(--border);
+  background: var(--surface-2);
+}
+
+.dialogHeader h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+#closeBtn {
+  background: none;
+  border: 1.5px solid var(--border);
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  cursor: pointer;
+  color: var(--ink-muted);
+  font-size: 0.9rem;
+  line-height: 1;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#closeBtn:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+/* ── Form ── */
+.popUpContent {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 24px 28px 0;
+}
+
+.popUpContent label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--ink-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-top: 10px;
+}
+
+.popUpContent label:first-child {
+  margin-top: 0;
+}
+
+.popUpContent input,
+.popUpContent textarea {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9375rem;
+  color: var(--ink);
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  width: 100%;
+}
+
+.popUpContent input:focus,
+.popUpContent textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(200, 75, 47, 0.12);
+}
+
+.popUpContent input::placeholder,
+.popUpContent textarea::placeholder {
+  color: #b8ae9e;
+}
+
+.popUpContent textarea {
+  resize: vertical;
+  min-height: 130px;
+  line-height: 1.6;
+}
+
+/* ── Dialog Buttons ── */
+.dialog-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 20px 28px 24px;
+}
+
+.dialog-buttons button {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 10px 22px;
+  border-radius: 8px;
+  border: 1.5px solid var(--border);
+  cursor: pointer;
+  background: transparent;
+  color: var(--ink-muted);
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.dialog-buttons button:hover {
+  background: var(--surface-2);
+  color: var(--ink);
+}
+
+#submitNoteBtn {
+  background: rgb(200, 75, 47);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(200, 75, 47, 0.28);
+}
+
+/* ── Empty state ── */
+/* #notesContainer:empty::after {
+  content: 'No notes yet — add one above.';
+  grid-column: 1 / -1;
+  text-align: center;
+  color: var(--ink-muted);
+  font-size: 0.95rem;
+  padding: 80px 0;
+  font-style: italic;
+} */
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  header { padding: 20px 24px; }
+  header h1 { font-size: 1.4rem; }
+  #notesContainer { padding: 24px; gap: 16px; }
 }
