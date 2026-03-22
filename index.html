@@ -17,24 +17,27 @@
 
     </main>
 
-    <dialog id="notePopUp">
-        <div class="dialogHeader">
-            <h2>Add New Note</h2>
-            <button id="closeBtn">x</button>
-        </div>
+    <div id="modal-container">
+        <dialog id="notePopUp">
+            <div class="dialogHeader">
+                <h2>Add New Note</h2>
+                <button id="closeBtn">x</button>
+            </div>
 
-        <form class="popUpContent">
-            <label for="noteTitle">Title</label>
-            <input type="text" id="noteTitle" placeholder="Enter note title..." required>
+            <form class="popUpContent">
+                <label for="noteTitle">Title</label>
+                <input type="text" id="noteTitle" placeholder="Enter note title..." required>
 
-            <label for="noteContent">Content</label>
-            <textArea id="noteContent" placeholder="Enter your note..." required></textArea>
-        </form>
+                <label for="noteContent">Content</label>
+                <textArea id="noteContent" placeholder="Enter your note..." required></textArea>
 
-        <div class="dialog-buttons">
-            <button>Cancel</button>
-            <button id="submitNoteBtn">Add Note</button>
-        </div>
-    </dialog>
+                <div class="dialog-buttons">
+                    <button>Cancel</button>
+                    <input type="submit" value="Add Note" id="submitNoteBtn"></input>
+                </div>
+            </form>
+        </dialog>
+    </div>
+
 </body>
 </html>
