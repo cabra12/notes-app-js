@@ -1,4 +1,3 @@
-"use strict";
 
 const addBtn = document.getElementById('addNoteBtn');
 const popUp = document.getElementById('notePopUp');
