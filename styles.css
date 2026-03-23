@@ -80,7 +80,7 @@ header h1::after {
 
 #notesContainer {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 24px;
   padding: 48px;
   max-width: 1400px;
@@ -116,12 +116,16 @@ header h1::after {
   font-size: 1rem;
   color: var(--ink-muted);
   line-height: 1.65;
+  max-width: 17.5rem;
+  overflow: hidden;
+  max-height: 8rem;
 }
 
 .card-buttons {
   display: flex;
   justify-content: flex-end;
   gap: 0.6rem;
+  padding-bottom: 0.8rem;
 }
 
 .card-buttons button {
