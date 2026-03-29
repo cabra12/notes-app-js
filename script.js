@@ -44,18 +44,24 @@ const createNote = (notes) => {
     //converts items in array for HTML rendering, using map to simplify 
     //.join() to make array that map produces into a string for innerHTML
     const cardItem = notes.map(item => {
-        return `<div class="note-card" data-id="${item.noteID}">
+        return `<div class="note-card" data-id="${cleanInput(item.noteID)}">
             <div class="card-buttons">
                 <button class="edit">Edit</button>
                 <button class="delete">Delete</button>
             </div>
-            <h3>${item.noteTitle}</h3>
-            <p>${item.noteContent.length > 100 ? item.noteContent.slice(0, 100) + "..." : item.noteContent}</p>
+            <h3>${cleanInput(item.noteTitle)}</h3>
+            <p>${cleanInput(item.noteContent.length > 100 ? item.noteContent.slice(0, 100) + "..." : item.noteContent)}</p>
         </div>`;
     }).join('');
 
     notesContainer.innerHTML = cardItem;
-}
+};
+
+const cleanInput = (str) => {
+    const div = document.createElement('div');
+    div.appendChild(document.createTextNode(str));
+    return div.innerHTML
+};
 
 const deleteNote = (e) => {
     if(e.target.classList.contains('delete')) {
@@ -65,7 +71,7 @@ const deleteNote = (e) => {
         createNote(notes);
         onLoad();
     }
-}
+};
 
 //Event Listener
 
