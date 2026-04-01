@@ -12,6 +12,10 @@
   --shadow: rgba(26, 22, 18, 0.08);
   --shadow-lg: rgba(26, 22, 18, 0.18);
   --radius: 12px;
+  --cat-personal: #f2a7b0;
+  --cat-work: #a7c4f2;
+  --cat-idea: #b5d8a8;
+  --cat-journal: #c8b4e8;
 }
 
 *, *::before, *::after {
@@ -108,7 +112,7 @@ header h1::after {
 
 .note-card p {
   font-size: 1rem;
-  color: var(--ink-muted);
+  color: var(--ink);
   line-height: 1.65;
   overflow: hidden;
   max-height: 8rem;
@@ -129,28 +133,28 @@ header h1::after {
   border-radius: 11px;
   border: none;
   cursor: pointer;
-  background: var(--accent);
-  color: #fff;
+  background: transparent;
+  border: 1px solid var(--ink);
+  color: var(--ink);
   transition: background 0.15s, transform 0.15s;
 }
 
 .card-buttons button:hover {
-  background: var(--accent-hover);
   transform: translateY(-1px);
 }
 
-#notePopUp {
+.pop-up {
   margin: auto;
   border: none;
   border-radius: 16px;
   padding: 0;
-  width: min(520px, 90vw);
+  width: min(650px, 90vw);
   background: var(--surface);
   box-shadow: 0 24px 64px rgba(26, 22, 18, 0.22);
   overflow: hidden;
 }
 
-#notePopUp::backdrop {
+.pop-up::backdrop {
   background: rgba(26, 22, 18, 0.45);
 }
 
@@ -170,23 +174,18 @@ header h1::after {
   color: var(--ink);
 }
 
-#closeBtn {
+.close-btn {
   background: none;
   border: 1.5px solid var(--border);
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
+  border-radius: 4px;
   cursor: pointer;
   color: var(--ink-muted);
-  font-size: 0.9rem;
-  line-height: 1;
+  font-size: 1.2rem;
+  padding: 0.25rem 0.5rem;
   transition: background 0.15s, color 0.15s, border-color 0.15s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
-#closeBtn:hover {
+.close-btn:hover {
   background: var(--accent);
   border-color: var(--accent);
   color: #fff;
@@ -242,7 +241,35 @@ header h1::after {
   line-height: 1.6;
 }
 
-/* ── Dialog Buttons ── */
+#categoryBtns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.cat-btn {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 0.5rem 0.7rem;
+  border-radius: 10px;
+  border: 1.5px solid transparent;
+  cursor: pointer;
+  color: var(--ink-muted);
+}
+
+.cat-btn.active {
+  border-color: var(--ink);
+  color: var(--ink);
+}
+
+.cat-btn[data-category="Personal"] { background: var(--cat-personal); }
+.cat-btn[data-category="Work"] { background: var(--cat-work); }
+.cat-btn[data-category="Journal"] { background: var(--cat-journal); }
+.cat-btn[data-category="Idea"] { background: var(--cat-idea); }
+
+
 .dialog-buttons {
   display: flex;
   justify-content: flex-end;

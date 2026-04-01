@@ -1,13 +1,17 @@
 
 const addBtn = document.getElementById('addNoteBtn');
-const popUp = document.getElementById('notePopUp');
-const closeBtn = document.getElementById('closeBtn');
+const addPopUp = document.getElementById('notePopUp');
+const closeAddBtn = document.getElementById('closeAddBtn');
+const addViewPopUp = document.getElementById('viewNotePopUp');
+const closeViewBtn = document.getElementById('closeViewBtn');
 const submitNoteBtn = document.getElementById('submitNoteBtn');
 const noteTitle = document.getElementById('noteTitle');
 const noteContent = document.getElementById('noteContent');
 const notesContainer = document.getElementById('notesContainer');
+const categoryBtns = document.querySelectorAll('.cat-btn');
 
 let notes = JSON.parse(localStorage.getItem('notes')) || [];
+let selectedCategory = 'Personal';
 
 const onLoad = () => {
     const divCard = document.createElement('h3');
@@ -29,7 +33,7 @@ const submitNote = (e) => {
     const titleInput = noteTitle.value; 
     const contentInput = noteContent.value;
         
-    notes.unshift({noteID: Date.now().toString(36), noteTitle: titleInput.trim(), noteContent: contentInput.trim()});
+    notes.unshift({noteID: Date.now().toString(36), noteTitle: titleInput.trim(), noteCategory: selectedCategory, noteContent: contentInput.trim()});
 
     createNote(notes);
 
@@ -37,16 +41,16 @@ const submitNote = (e) => {
     noteTitle.value = '';
     noteContent.value = '';
 
-    popUp.close();
+    addPopUp.close();
 };
 
 const createNote = (notes) => {
     //converts items in array for HTML rendering, using map to simplify 
     //.join() to make array that map produces into a string for innerHTML
     const cardItem = notes.map(item => {
-        return `<div class="note-card" data-id="${cleanInput(item.noteID)}">
+        return `<div class="note-card" data-id="${cleanInput(item.noteID)}" style="background: var(--cat-${item.noteCategory.toLowerCase()})">
             <div class="card-buttons">
-                <button class="edit">Edit</button>
+                <button class="view">View</button>
                 <button class="delete">Delete</button>
             </div>
             <h3>${cleanInput(item.noteTitle)}</h3>
@@ -60,7 +64,7 @@ const createNote = (notes) => {
 const cleanInput = (str) => {
     const div = document.createElement('div');
     div.appendChild(document.createTextNode(str));
-    return div.innerHTML
+    return div.innerHTML;
 };
 
 const deleteNote = (e) => {
@@ -73,11 +77,36 @@ const deleteNote = (e) => {
     }
 };
 
+const viewNote = (e) => {
+    if(e.target.classList.contains('view')) {
+        const id = e.target.closest('.note-card').dataset.id;
+        const note = notes.find(n => n.noteID === id);
+        document.getElementById('viewNoteTitle').textContent = note.noteTitle;
+        document.getElementById('viewNoteCategory').textContent = note.noteCategory;
+        document.getElementById('viewNoteContent').textContent = note.noteContent;
+        addViewPopUp.showModal();
+    }
+};
+
 //Event Listener
 
-addBtn.addEventListener('click', () => popUp.showModal());
-closeBtn.addEventListener('click', () => popUp.close());
+addBtn.addEventListener('click', () => addPopUp.showModal());
+closeAddBtn.addEventListener('click', () => addPopUp.close());
+closeViewBtn.addEventListener('click', () => addViewPopUp.close());
 document.addEventListener('DOMContentLoaded', onLoad);
 submitNoteBtn.addEventListener('click', submitNote);
 notesContainer.addEventListener('click', deleteNote);
+notesContainer.addEventListener('click', viewNote);
+
+const initCategoryBtns = () => {
+    categoryBtns.forEach(btn => {
+        btn.addEventListener('click', () =>{
+            categoryBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            selectedCategory = btn.dataset.category;
+        });
+    });
+};
+
+initCategoryBtns();
 

@@ -18,22 +18,53 @@
     </main>
 
 
-    <dialog id="notePopUp">
+    <dialog id="notePopUp" class="pop-up">
         <div class="dialogHeader">
             <h2>Add New Note</h2>
-            <button id="closeBtn">x</button>
+            <button id="closeAddBtn" class="close-btn">x</button>
         </div>
 
         <form class="popUpContent">
             <label for="noteTitle">Title</label>
             <input type="text" id="noteTitle" placeholder="Enter note title..." required>
 
+            <label>Category</label>
+            <div id="categoryBtns">
+                <button type="button" class="cat-btn active" data-category="Personal">Personal</button>
+                <button type="button" class="cat-btn" data-category="Work">Work</button>
+                <button type="button" class="cat-btn" data-category="Journal">Journal</button>
+                <button type="button" class="cat-btn" data-category="Idea">Idea</button>
+            </div>
+
             <label for="noteContent">Content</label>
             <textArea id="noteContent" placeholder="Enter your note..." required></textArea>
 
             <div class="dialog-buttons">
-                <button>Cancel</button>
+                <button type="button">Cancel</button>
                 <input type="submit" value="Add Note" id="submitNoteBtn"></input>
+            </div>
+        </form>
+    </dialog>
+
+    <dialog id="viewNotePopUp" class="pop-up">
+        <div class="dialogHeader">
+            <h2>View Note</h2>
+            <button id="closeViewBtn" class="close-btn">x</button>
+        </div>
+
+        <form class="popUpContent">
+            <label for="noteTitle">Title</label>
+            <h3 id="viewNoteTitle"></h3>
+
+            <label>Category</label>
+            <p id="viewNoteCategory"></p>
+
+            <label for="noteContent">Content</label>
+            <p id="viewNoteContent"></p>
+
+            <div class="dialog-buttons">
+                <button type="button">Cancel</button>
+                <input type="submit" value="Edit Note" id=""></input>
             </div>
         </form>
     </dialog>
