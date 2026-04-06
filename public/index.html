@@ -13,6 +13,16 @@
         <button id="addNoteBtn">+ Add Note</button>
     </header>
 
+    <section>
+        <div class="category-filter">
+            <button>All</button>
+            <button>Personal</button>
+            <button>Work</button>
+            <button>Idea</button>
+            <button>Journal</button>
+        </div>
+    </section>
+
     <main id="notesContainer">
 
     </main>
@@ -28,7 +38,7 @@
             <label for="noteTitle">Title</label>
             <input type="text" id="noteTitle" placeholder="Enter note title..." required>
 
-            <label>Category</label>
+            <label>Pick a Category</label>
             <div id="categoryBtns">
                 <button type="button" class="cat-btn active" data-category="Personal">Personal</button>
                 <button type="button" class="cat-btn" data-category="Work">Work</button>

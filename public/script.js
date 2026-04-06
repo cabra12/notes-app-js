@@ -10,7 +10,7 @@ const noteContent = document.getElementById('noteContent');
 const notesContainer = document.getElementById('notesContainer');
 const categoryBtns = document.querySelectorAll('.cat-btn');
 
-let notes = JSON.parse(localStorage.getItem('notes')) || [];
+let notes = [];
 let selectedCategory = 'Personal';
 
 const onLoad = () => {
@@ -28,16 +28,23 @@ const onLoad = () => {
     }
 };
 
-const submitNote = (e) => {
+const submitNote = async (e) => {
     e.preventDefault();
     const titleInput = noteTitle.value; 
     const contentInput = noteContent.value;
         
-    notes.unshift({noteID: Date.now().toString(36), noteTitle: titleInput.trim(), noteCategory: selectedCategory, noteContent: contentInput.trim()});
+    //notes.unshift({noteID: Date.now().toString(36), noteTitle: titleInput.trim(), noteCategory: selectedCategory, noteContent: contentInput.trim()});
 
-    createNote(notes);
+    const response = await fetch('http://localhost:3000/notes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json'},
+        body: JSON.stringify({ noteTitle: titleInput.trim(), noteCategory: selectedCategory, noteContent: contentInput.trim() })
+    });
 
-    localStorage.setItem('notes', JSON.stringify(notes));
+    const noteResponse = await response.json();
+    createNote(noteResponse.notes);
+
+    //localStorage.setItem('notes', JSON.stringify(notes));
     noteTitle.value = '';
     noteContent.value = '';
 
@@ -84,6 +91,7 @@ const viewNote = (e) => {
         document.getElementById('viewNoteTitle').textContent = note.noteTitle;
         document.getElementById('viewNoteCategory').textContent = note.noteCategory;
         document.getElementById('viewNoteContent').textContent = note.noteContent;
+        document.querySelector('#viewNotePopUp .dialogHeader').style.background = `var(--cat-${note.noteCategory.toLowerCase()})`;
         addViewPopUp.showModal();
     }
 };

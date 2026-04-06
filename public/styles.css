@@ -3,11 +3,11 @@
 :root {
   --bg: #f5f0e8;
   --surface: #fffdf8;
-  --surface-2: #f0ebe0;
+  --surface-2: #f0ebe0; 
   --ink: #1a1612;
   --ink-muted: #7a6f62;
-  --accent: #c84b2f;
-  --accent-hover: #a83a20;
+  --accent: #4a7c7c;
+  --accent-hover: #3a6363;
   --border: #d8d0c4;
   --shadow: rgba(26, 22, 18, 0.08);
   --shadow-lg: rgba(26, 22, 18, 0.18);
@@ -67,7 +67,6 @@ header h1::after {
   border-radius: 10px;
   cursor: pointer;
   transition: transform 0.15s, background-color 0.15s;
-  box-shadow: 0 2px 8px rgba(200, 75, 47, 0.3);
 }
 
 #addNoteBtn:hover {
@@ -77,6 +76,11 @@ header h1::after {
 
 #addNoteBtn:active {
   transform: translateY(0);
+}
+
+.category-filter {
+  justify-content: center;
+  margin-top: 10px;
 }
 
 #notesContainer {
@@ -241,7 +245,7 @@ header h1::after {
   line-height: 1.6;
 }
 
-#categoryBtns {
+#categoryBtns, .category-filter{
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
