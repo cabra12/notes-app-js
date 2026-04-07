@@ -13,19 +13,38 @@ const categoryBtns = document.querySelectorAll('.cat-btn');
 let notes = [];
 let selectedCategory = 'Personal';
 
-const onLoad = () => {
+const onLoad = async () => {
+    try {
+        const response = await fetch('http://localhost:3000/notes', { method: 'GET' });
+
+        if(!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const getAllNotesResponse = await response.json();
+
+        getAllNotesResponse.forEach(note => createNote(note));
+
+    } catch (error) {
+        console.error('Error fetching items:', error);
+    }
+
+
+    introCardCreate();
+};
+
+const introCardCreate = () =>  {
     const divCard = document.createElement('h3');
     divCard.classList.add('note-card');
     const emptyCardText = document.createTextNode("Click 'Add Note' to start adding cards!");
-    notesContainer.appendChild(divCard);
     divCard.appendChild(emptyCardText);
 
-    if(notes.length === 0) {
-        divCard.style.display = 'block';
-    }else {
+    if(notesContainer.children.length > 0) {
         divCard.style.display = 'none';
-        createNote(notes);
+    }else {
+        divCard.style.display = 'block';
     }
+
+    notesContainer.appendChild(divCard);
 };
 
 const submitNote = async (e) => {
@@ -42,7 +61,7 @@ const submitNote = async (e) => {
     });
 
     const noteResponse = await response.json();
-    createNote(noteResponse.notes);
+    createNote(noteResponse.note);
 
     //localStorage.setItem('notes', JSON.stringify(notes));
     noteTitle.value = '';
@@ -51,21 +70,18 @@ const submitNote = async (e) => {
     addPopUp.close();
 };
 
-const createNote = (notes) => {
-    //converts items in array for HTML rendering, using map to simplify 
-    //.join() to make array that map produces into a string for innerHTML
-    const cardItem = notes.map(item => {
-        return `<div class="note-card" data-id="${cleanInput(item.noteID)}" style="background: var(--cat-${item.noteCategory.toLowerCase()})">
+const createNote = (noteObj) => {
+    const cardItem = 
+        `<div class="note-card" data-id="${cleanInput(noteObj.id)}" style="background: var(--cat-${noteObj.notecategory.toLowerCase()})">
             <div class="card-buttons">
                 <button class="view">View</button>
                 <button class="delete">Delete</button>
             </div>
-            <h3>${cleanInput(item.noteTitle)}</h3>
-            <p>${cleanInput(item.noteContent.length > 100 ? item.noteContent.slice(0, 100) + "..." : item.noteContent)}</p>
+            <h3>${cleanInput(noteObj.notetitle)}</h3>
+            <p>${cleanInput(noteObj.notecontent.length > 100 ? noteObj.notecontent.slice(0, 100) + "..." : noteObj.notecontent)}</p>
         </div>`;
-    }).join('');
 
-    notesContainer.innerHTML = cardItem;
+    notesContainer.insertAdjacentHTML('afterbegin', cardItem);
 };
 
 const cleanInput = (str) => {
