@@ -156,6 +156,24 @@ const editNote = (e) => {
     addPopUp.showModal();
 };
 
+const deleteNote = async (e) => {
+    if(e.target.classList.contains('delete')) {
+        const id = e.target.closest('.note-card').dataset.id;
+        try {
+            const response = await fetch(`http://localhost:3000/notes/${id}`, { method: 'DELETE'});
+
+            if(!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            document.querySelector(`[data-id=${id}]`).remove();
+
+        } catch (error) {
+            console.error('Error fetching items:', error);
+        }
+    }
+};
+
 //Event Listener
 
 addBtn.addEventListener('click', () => addPopUp.showModal());
@@ -164,6 +182,7 @@ closeViewBtn.addEventListener('click', () => addViewPopUp.close());
 document.addEventListener('DOMContentLoaded', onLoad);
 submitNoteBtn.addEventListener('click', submitNote);
 notesContainer.addEventListener('click', viewNote);
+notesContainer.addEventListener('click', deleteNote);
 document.getElementById('edit-button').addEventListener('click', editNote);
 
 const initCategoryBtns = () => {

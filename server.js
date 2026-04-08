@@ -69,6 +69,16 @@ app.put('/notes/:id', async(req, res) => {
     }
 });
 
+app.delete('/notes/:id', async(req, res) => {
+    try {
+        const { id } = req.params;
+        const note = await pool.query("DELETE FROM notes WHERE id = $1", [id]);
+        res.json({ sucess: true, data: note });
+    } catch (error) {
+        console.error(error.message);
+    }
+});
+
 app.listen(3000, () => {
     console.log('Server is listening on port 3000'); 
 });
