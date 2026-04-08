@@ -16,6 +16,7 @@ let selectedCategory = 'Personal';
 const onLoad = async () => {
     try {
         const response = await fetch('http://localhost:3000/notes', { method: 'GET' });
+        //get requests don't have headers or body
 
         if(!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
@@ -27,7 +28,6 @@ const onLoad = async () => {
     } catch (error) {
         console.error('Error fetching items:', error);
     }
-
 
     introCardCreate();
 };
@@ -51,8 +51,6 @@ const submitNote = async (e) => {
     e.preventDefault();
     const titleInput = noteTitle.value; 
     const contentInput = noteContent.value;
-        
-    //notes.unshift({noteID: Date.now().toString(36), noteTitle: titleInput.trim(), noteCategory: selectedCategory, noteContent: contentInput.trim()});
 
     const response = await fetch('http://localhost:3000/notes', {
         method: 'POST',
@@ -63,7 +61,6 @@ const submitNote = async (e) => {
     const noteResponse = await response.json();
     createNote(noteResponse.note);
 
-    //localStorage.setItem('notes', JSON.stringify(notes));
     noteTitle.value = '';
     noteContent.value = '';
 
@@ -100,15 +97,27 @@ const deleteNote = (e) => {
     }
 };
 
-const viewNote = (e) => {
+const viewNote = async (e) => {
     if(e.target.classList.contains('view')) {
         const id = e.target.closest('.note-card').dataset.id;
-        const note = notes.find(n => n.noteID === id);
-        document.getElementById('viewNoteTitle').textContent = note.noteTitle;
-        document.getElementById('viewNoteCategory').textContent = note.noteCategory;
-        document.getElementById('viewNoteContent').textContent = note.noteContent;
-        document.querySelector('#viewNotePopUp .dialogHeader').style.background = `var(--cat-${note.noteCategory.toLowerCase()})`;
-        addViewPopUp.showModal();
+
+        try {
+            const response = await fetch(`http://localhost:3000/notes/${id}`, { method: 'GET'});
+
+            if(!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+
+            const note = await response.json();
+
+            document.getElementById('viewNoteTitle').textContent = note.notetitle;
+            document.getElementById('viewNoteCategory').textContent = note.notecategory;
+            document.getElementById('viewNoteContent').textContent = note.notecontent;
+            document.querySelector('#viewNotePopUp .dialogHeader').style.background = `var(--cat-${note.notecategory.toLowerCase()})`;
+            addViewPopUp.showModal();
+        } catch (error) {
+            console.error(error.message);
+        }
     }
 };
 

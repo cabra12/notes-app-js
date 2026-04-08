@@ -5,10 +5,6 @@ const pool = require('./config/db.js');
 app.use(express.json()); //parse incoming JSON from the frontend
 
 
-// app.get('/', (req, res) => {
-//     res.send(path.join(__dirname, 'index.html'));
-// });
-
 //middleware
 app.use(cors({
     origin: ['http://localhost:3000', 'http://127.0.0.1:5500']
@@ -35,6 +31,21 @@ app.get('/notes', async (req, res) => {
     try {
         const allNotes = await pool.query("SELECT * FROM notes");
         res.json(allNotes.rows); //pg provides you with .rows, which you can use to get an array of objects, with each row being a row from the database
+    } catch (error) {
+        console.error(error.message);
+    }
+});
+
+app.get('/notes/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const note = await pool.query("SELECT * FROM notes WHERE id = $1", 
+            [id]
+        );
+
+        res.json(note.rows[0]); //pool.query returns a result object, where the actual data is in an array valu within a key called "rows"
+        //rows[0] gets the first and only item from it
+        //returns an object
     } catch (error) {
         console.error(error.message);
     }
