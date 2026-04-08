@@ -2,13 +2,15 @@ const cors = require('cors');
 const express = require('express');
 const app = express();
 const pool = require('./config/db.js');
-app.use(express.json()); //parse incoming JSON from the frontend
+
 
 
 //middleware
 app.use(cors({
     origin: ['http://localhost:3000', 'http://127.0.0.1:5500']
 }));
+
+app.use(express.json()); //parse incoming JSON from the frontend
 
 //Routes
 
@@ -21,7 +23,7 @@ app.post('/notes', async(req, res) => {
             [id, noteTitle, noteCategory, noteContent]
         );
 
-        res.json({ message: 'Note saved!', note: newNote.rows[0]}); //.rows will give you the specific row you just inserted
+        res.json({ message: 'Note saved!', note: newNote.rows[0]}); //.rows is specifically given through pg
     } catch(error) {
         console.error(error.message);
     }
@@ -30,7 +32,7 @@ app.post('/notes', async(req, res) => {
 app.get('/notes', async (req, res) => {
     try {
         const allNotes = await pool.query("SELECT * FROM notes");
-        res.json(allNotes.rows); //pg provides you with .rows, which you can use to get an array of objects, with each row being a row from the database
+        res.json(allNotes.rows); 
     } catch (error) {
         console.error(error.message);
     }
@@ -39,6 +41,7 @@ app.get('/notes', async (req, res) => {
 app.get('/notes/:id', async (req, res) => {
     try {
         const { id } = req.params;
+        //equivalent to const id = req.params.id
         const note = await pool.query("SELECT * FROM notes WHERE id = $1", 
             [id]
         );
@@ -46,6 +49,21 @@ app.get('/notes/:id', async (req, res) => {
         res.json(note.rows[0]); //pool.query returns a result object, where the actual data is in an array valu within a key called "rows"
         //rows[0] gets the first and only item from it
         //returns an object
+    } catch (error) {
+        console.error(error.message);
+    }
+});
+
+app.put('/notes/:id', async(req, res) => {
+    try {
+        const { id } = req.params;
+        const { noteTitle, noteCategory, noteContent } = req.body;
+
+        const updateNote = await pool.query("UPDATE notes SET notetitle = $1, notecategory = $2, notecontent = $3 WHERE id = $4 RETURNING *", 
+            [noteTitle, noteCategory, noteContent, id]
+        );
+
+        res.json({ message: 'Note updated!', note: updateNote.rows[0] });
     } catch (error) {
         console.error(error.message);
     }

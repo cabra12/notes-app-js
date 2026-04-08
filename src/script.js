@@ -12,6 +12,9 @@ const categoryBtns = document.querySelectorAll('.cat-btn');
 
 let notes = [];
 let selectedCategory = 'Personal';
+let currentNoteId;
+let currentNote;
+let isEditing = false;
 
 const onLoad = async () => {
     try {
@@ -52,19 +55,50 @@ const submitNote = async (e) => {
     const titleInput = noteTitle.value; 
     const contentInput = noteContent.value;
 
-    const response = await fetch('http://localhost:3000/notes', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json'},
-        body: JSON.stringify({ noteTitle: titleInput.trim(), noteCategory: selectedCategory, noteContent: contentInput.trim() })
-    });
+    try {
+        if (isEditing) {
+            const editResponse = await fetch(`http://localhost:3000/notes/${currentNoteId}`, {
+                method: 'PUT', 
+                headers: { 'Content-Type': 'application/json'},
+                body: JSON.stringify({ noteTitle: titleInput.trim(), noteCategory: selectedCategory, noteContent: contentInput.trim() })
+            });
 
-    const noteResponse = await response.json();
-    createNote(noteResponse.note);
+            const editResponseQuery = await editResponse.json();
+            const editResponseObj = editResponseQuery.note;
 
-    noteTitle.value = '';
-    noteContent.value = '';
+            const editCard = document.querySelector(`[data-id=${currentNoteId}]`);
 
-    addPopUp.close();
+            editCard.setAttribute('data-id', cleanInput(editResponseObj.id));
+            editCard.setAttribute('style', `background: var(--cat-${editResponseObj.notecategory.toLowerCase()}`)
+
+            editCard.innerHTML = `
+                <div class="card-buttons">
+                    <button class="view">View</button>
+                    <button class="delete">Delete</button>
+                </div>
+                <h3>${cleanInput(editResponseObj.notetitle)}</h3>
+                <p>${cleanInput(editResponseObj.notecontent.length > 100 ? editResponseObj.notecontent.slice(0, 100) + "..." : editResponseObj.notecontent)}</p>
+            `;
+            isEditing = false;
+        } else {
+            const response = await fetch('http://localhost:3000/notes', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json'},
+                body: JSON.stringify({ noteTitle: titleInput.trim(), noteCategory: selectedCategory, noteContent: contentInput.trim() })
+            }); 
+
+            const noteResponse = await response.json();
+            createNote(noteResponse.note);
+        }
+
+        noteTitle.value = '';
+        noteContent.value = '';
+
+        addPopUp.close();
+        
+    } catch (error) {
+        console.error(`Error fetching items: ${error}`);
+    }
 };
 
 const createNote = (noteObj) => {
@@ -87,16 +121,6 @@ const cleanInput = (str) => {
     return div.innerHTML;
 };
 
-const deleteNote = (e) => {
-    if(e.target.classList.contains('delete')) {
-        const id = e.target.closest('.note-card').dataset.id;
-        notes = notes.filter((note) => note.noteID !== id);
-        localStorage.setItem('notes', JSON.stringify(notes));
-        createNote(notes);
-        onLoad();
-    }
-};
-
 const viewNote = async (e) => {
     if(e.target.classList.contains('view')) {
         const id = e.target.closest('.note-card').dataset.id;
@@ -108,17 +132,28 @@ const viewNote = async (e) => {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
 
-            const note = await response.json();
+            currentNoteId = id;
+            currentNote = await response.json();
 
-            document.getElementById('viewNoteTitle').textContent = note.notetitle;
-            document.getElementById('viewNoteCategory').textContent = note.notecategory;
-            document.getElementById('viewNoteContent').textContent = note.notecontent;
-            document.querySelector('#viewNotePopUp .dialogHeader').style.background = `var(--cat-${note.notecategory.toLowerCase()})`;
+            document.getElementById('viewNoteTitle').textContent = currentNote.notetitle;
+            document.getElementById('viewNoteCategory').textContent = currentNote.notecategory;
+            document.getElementById('viewNoteContent').textContent = currentNote.notecontent;
+            document.querySelector('#viewNotePopUp .dialogHeader').style.background = `var(--cat-${currentNote.notecategory.toLowerCase()})`;
             addViewPopUp.showModal();
+
         } catch (error) {
-            console.error(error.message);
+            console.error('Error fetching items:', error);
         }
     }
+};
+
+const editNote = (e) => {
+    e.preventDefault();
+    addViewPopUp.close();
+    isEditing = true;
+    noteTitle.value = currentNote.notetitle;
+    noteContent.value = currentNote.notecontent;
+    addPopUp.showModal();
 };
 
 //Event Listener
@@ -128,8 +163,8 @@ closeAddBtn.addEventListener('click', () => addPopUp.close());
 closeViewBtn.addEventListener('click', () => addViewPopUp.close());
 document.addEventListener('DOMContentLoaded', onLoad);
 submitNoteBtn.addEventListener('click', submitNote);
-notesContainer.addEventListener('click', deleteNote);
 notesContainer.addEventListener('click', viewNote);
+document.getElementById('edit-button').addEventListener('click', editNote);
 
 const initCategoryBtns = () => {
     categoryBtns.forEach(btn => {
