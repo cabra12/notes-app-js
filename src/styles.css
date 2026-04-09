@@ -31,6 +31,11 @@ body {
   min-height: 100vh;
 }
 
+button, input[type="submit"] {
+  cursor: pointer;
+  appearance: none;
+}
+
 header {
   display: flex;
   align-items: center;
@@ -83,6 +88,31 @@ header h1::after {
   margin-top: 10px;
 }
 
+.filter-button {
+  border-radius: 20px;
+  border: none;
+  padding: 8px 20px;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.filter-button.active {
+  border: 1.5px solid var(--ink);
+}
+
+.filter-button[data-category="All"] { background: #f2e6a7; }
+.filter-button[data-category="Personal"] { background: var(--cat-personal); }
+.filter-button[data-category="Work"] { background: var(--cat-work); }
+.filter-button[data-category="Journal"] { background: var(--cat-journal); }
+.filter-button[data-category="Idea"] { background: var(--cat-idea); }
+
+.no-notes-warning {
+  grid-column: 1 / -1;
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
 #notesContainer {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -92,13 +122,14 @@ header h1::after {
   margin: 0 auto;
 }
 
-.note-card {
+.note-card, .intro-card {
   background: var(--surface);
   border: 1.5px solid var(--border);
   border-radius: var(--radius);
   padding: 24px;
   position: relative;
   overflow: hidden;
+  min-height: 210px;
 }
 
 .note-card:hover {

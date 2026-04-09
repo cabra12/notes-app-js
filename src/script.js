@@ -9,6 +9,7 @@ const noteTitle = document.getElementById('noteTitle');
 const noteContent = document.getElementById('noteContent');
 const notesContainer = document.getElementById('notesContainer');
 const categoryBtns = document.querySelectorAll('.cat-btn');
+const filterBtns = document.querySelectorAll('.filter-button')
 
 let notes = [];
 let selectedCategory = 'Personal';
@@ -16,7 +17,17 @@ let currentNoteId;
 let currentNote;
 let isEditing = false;
 
+filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        filterCards(btn.dataset.category);
+    });
+});
+
 const onLoad = async () => {
+    document.querySelectorAll('dialog').forEach(d => d.close());
+
     try {
         const response = await fetch('http://localhost:3000/notes', { method: 'GET' });
         //get requests don't have headers or body
@@ -37,17 +48,41 @@ const onLoad = async () => {
 
 const introCardCreate = () =>  {
     const divCard = document.createElement('h3');
-    divCard.classList.add('note-card');
-    const emptyCardText = document.createTextNode("Click 'Add Note' to start adding cards!");
-    divCard.appendChild(emptyCardText);
-
-    if(notesContainer.children.length > 0) {
-        divCard.style.display = 'none';
-    }else {
-        divCard.style.display = 'block';
-    }
+    divCard.classList.add('intro-card');
+    divCard.textContent = "Click 'Add Note' to start adding cards!";
 
     notesContainer.appendChild(divCard);
+
+    if(document.querySelectorAll('.note-card').length > 0) {
+        filterCards('All');
+    }
+    
+};
+
+const filterCards = (type) => {
+    const cards = document.querySelectorAll('.note-card');
+    let anyVisible = false; 
+    const introCard = document.querySelector('.intro-card');
+    const totalCards = cards.length;
+
+    cards.forEach((card) => {
+        if(card.getAttribute('data-category') === type || type === 'All') {
+            card.style.display = 'block';
+            anyVisible = true;
+        } else {
+            card.style.display = 'none';
+        }
+    });
+
+    document.querySelector('.no-notes-warning')?.remove(); //if not there, it will throw undefined instead of crashing the program
+    if(introCard) introCard.style.display = totalCards === 0 ? 'block' : 'none';
+
+    if(!anyVisible) {
+        const noNotesDiv = document.createElement('div');
+        noNotesDiv.classList.add('no-notes-warning');
+        noNotesDiv.textContent = 'No notes match that category';
+        notesContainer.appendChild(noNotesDiv);
+    }
 };
 
 const submitNote = async (e) => {
@@ -103,7 +138,7 @@ const submitNote = async (e) => {
 
 const createNote = (noteObj) => {
     const cardItem = 
-        `<div class="note-card" data-id="${cleanInput(noteObj.id)}" style="background: var(--cat-${noteObj.notecategory.toLowerCase()})">
+        `<div class="note-card" data-id="${cleanInput(noteObj.id)}" data-category="${cleanInput(noteObj.notecategory)}" style="background: var(--cat-${noteObj.notecategory.toLowerCase()})">
             <div class="card-buttons">
                 <button class="view">View</button>
                 <button class="delete">Delete</button>
@@ -167,6 +202,10 @@ const deleteNote = async (e) => {
             }
 
             document.querySelector(`[data-id=${id}]`).remove();
+
+            if(document.querySelectorAll('.note-card').length === 0) {
+                introCardCreate();
+            }
 
         } catch (error) {
             console.error('Error fetching items:', error);
