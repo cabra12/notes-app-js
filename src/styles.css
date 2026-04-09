@@ -5,7 +5,7 @@
   --surface: #fffdf8;
   --surface-2: #f0ebe0; 
   --ink: #1a1612;
-  --ink-muted: #7a6f62;
+  --ink-muted: #4a4540;
   --accent: #4a7c7c;
   --accent-hover: #3a6363;
   --border: #d8d0c4;
@@ -94,10 +94,12 @@ header h1::after {
   padding: 8px 20px;
   font-size: 1.1rem;
   cursor: pointer;
+  color: var(--ink-muted)
 }
 
 .filter-button.active {
   border: 1.5px solid var(--ink);
+  color: var(--ink);
 }
 
 .filter-button[data-category="All"] { background: #f2e6a7; }
@@ -209,9 +211,9 @@ header h1::after {
   color: var(--ink);
 }
 
-.close-btn {
+.close-add-btn, .close-view-btn {
   background: none;
-  border: 1.5px solid var(--border);
+  border: none;
   border-radius: 4px;
   cursor: pointer;
   color: var(--ink-muted);
@@ -220,10 +222,8 @@ header h1::after {
   transition: background 0.15s, color 0.15s, border-color 0.15s;
 }
 
-.close-btn:hover {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: #fff;
+.close-add-btn:hover, .close-view-btn:hover {
+  background-color: var(--accent);
 }
 
 .popUpContent {
@@ -279,15 +279,13 @@ header h1::after {
 #categoryBtns, .category-filter{
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 10px;
   margin-bottom: 4px;
 }
 
 .cat-btn {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 0.8rem;
-  font-weight: 500;
-  padding: 0.5rem 0.7rem;
+  font-size: 0.87rem;
+  padding: 0.5rem 0.85rem;
   border-radius: 10px;
   border: 1.5px solid transparent;
   cursor: pointer;
@@ -313,7 +311,6 @@ header h1::after {
 }
 
 .dialog-buttons button {
-  font-family: 'DM Sans', sans-serif;
   font-size: 0.9rem;
   font-weight: 500;
   padding: 10px 22px;
@@ -330,7 +327,7 @@ header h1::after {
   color: var(--ink);
 }
 
-#submitNoteBtn {
+#submitNoteBtn, #edit-button {
   background: var(--accent);
   color: #fff;
   box-shadow: 0 2px 8px rgba(200, 75, 47, 0.28);
@@ -339,7 +336,7 @@ header h1::after {
   transition: background 0.2s, transform 0.15s;
 }
 
-#submitNoteBtn:hover {
+#submitNoteBtn:hover, #edit-button:hover {
   background: var(--accent-hover);
   transform: translateY(-1px);
 }

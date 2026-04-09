@@ -31,7 +31,7 @@
     <dialog id="notePopUp" class="pop-up">
         <div class="dialogHeader">
             <h2>Add New Note</h2>
-            <button id="closeAddBtn" class="close-btn">x</button>
+            <button id="closeAddBtn" class="close-add-btn">x</button>
         </div>
 
         <form class="popUpContent">
@@ -50,7 +50,7 @@
             <textArea id="noteContent" placeholder="Enter your note..." required></textArea>
 
             <div class="dialog-buttons">
-                <button type="button">Cancel</button>
+                <button type="button" class="close-add-btn">Cancel</button>
                 <input type="submit" value="Add Note" id="submitNoteBtn"></input>
             </div>
         </form>
@@ -59,7 +59,7 @@
     <dialog id="viewNotePopUp" class="pop-up">
         <div class="dialogHeader">
             <h2>View Note</h2>
-            <button id="closeViewBtn" class="close-btn">x</button>
+            <button id="closeViewBtn" class="close-view-btn">x</button>
         </div>
 
         <form class="popUpContent">
@@ -73,7 +73,7 @@
             <p id="viewNoteContent"></p>
 
             <div class="dialog-buttons">
-                <button type="button">Cancel</button>
+                <button type="button" class="close-view-btn">Cancel</button>
                 <input type="submit" value="Edit Note" id="edit-button"></input>
             </div>
         </form>

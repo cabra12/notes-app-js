@@ -1,15 +1,15 @@
 
 const addBtn = document.getElementById('addNoteBtn');
 const addPopUp = document.getElementById('notePopUp');
-const closeAddBtn = document.getElementById('closeAddBtn');
+const closeAddBtns = document.querySelectorAll('.close-add-btn');
 const addViewPopUp = document.getElementById('viewNotePopUp');
-const closeViewBtn = document.getElementById('closeViewBtn');
+const closeViewBtns = document.querySelectorAll('.close-view-btn');
 const submitNoteBtn = document.getElementById('submitNoteBtn');
 const noteTitle = document.getElementById('noteTitle');
 const noteContent = document.getElementById('noteContent');
 const notesContainer = document.getElementById('notesContainer');
 const categoryBtns = document.querySelectorAll('.cat-btn');
-const filterBtns = document.querySelectorAll('.filter-button')
+const filterBtns = document.querySelectorAll('.filter-button');
 
 let notes = [];
 let selectedCategory = 'Personal';
@@ -216,8 +216,12 @@ const deleteNote = async (e) => {
 //Event Listener
 
 addBtn.addEventListener('click', () => addPopUp.showModal());
-closeAddBtn.addEventListener('click', () => addPopUp.close());
-closeViewBtn.addEventListener('click', () => addViewPopUp.close());
+closeAddBtns.forEach(btn => {
+    btn.addEventListener('click', () => addPopUp.close());
+});
+closeViewBtns.forEach(btn => {
+    btn.addEventListener('click', () => addViewPopUp.close());
+});
 document.addEventListener('DOMContentLoaded', onLoad);
 submitNoteBtn.addEventListener('click', submitNote);
 notesContainer.addEventListener('click', viewNote);
