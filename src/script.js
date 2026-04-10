@@ -148,6 +148,10 @@ const createNote = (noteObj) => {
         </div>`;
 
     notesContainer.insertAdjacentHTML('afterbegin', cardItem);
+
+    if(document.querySelectorAll('.note-card').length > 0) {
+        filterCards('All');
+    }
 };
 
 const cleanInput = (str) => {
