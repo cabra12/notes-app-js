@@ -29,7 +29,7 @@ const onLoad = async () => {
     document.querySelectorAll('dialog').forEach(d => d.close());
 
     try {
-        const response = await fetch('http://localhost:3000/notes', { method: 'GET' });
+        const response = await fetch('https://notes-app-js.onrender.com/notes', { method: 'GET' });
         //get requests don't have headers or body
 
         if(!response.ok) {
@@ -92,7 +92,7 @@ const submitNote = async (e) => {
 
     try {
         if (isEditing) {
-            const editResponse = await fetch(`http://localhost:3000/notes/${currentNoteId}`, {
+            const editResponse = await fetch(`https://notes-app-js.onrender.com/notes/${currentNoteId}`, {
                 method: 'PUT', 
                 headers: { 'Content-Type': 'application/json'},
                 body: JSON.stringify({ noteTitle: titleInput.trim(), noteCategory: selectedCategory, noteContent: contentInput.trim() })
@@ -116,7 +116,7 @@ const submitNote = async (e) => {
             `;
             isEditing = false;
         } else {
-            const response = await fetch('http://localhost:3000/notes', {
+            const response = await fetch('https://notes-app-js.onrender.com/notes', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json'},
                 body: JSON.stringify({ noteTitle: titleInput.trim(), noteCategory: selectedCategory, noteContent: contentInput.trim() })
@@ -161,7 +161,7 @@ const viewNote = async (e) => {
         const id = e.target.closest('.note-card').dataset.id;
 
         try {
-            const response = await fetch(`http://localhost:3000/notes/${id}`, { method: 'GET'});
+            const response = await fetch(`https://notes-app-js.onrender.com/notes/${id}`, { method: 'GET'});
 
             if(!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -195,7 +195,7 @@ const deleteNote = async (e) => {
     if(e.target.classList.contains('delete')) {
         const id = e.target.closest('.note-card').dataset.id;
         try {
-            const response = await fetch(`http://localhost:3000/notes/${id}`, { method: 'DELETE'});
+            const response = await fetch(`https://notes-app-js.onrender.com/notes/${id}`, { method: 'DELETE'});
 
             if(!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);

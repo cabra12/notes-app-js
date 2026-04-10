@@ -2,12 +2,12 @@ const cors = require('cors');
 const express = require('express');
 const app = express();
 const pool = require('./config/db.js');
-
+const PORT = process.env.PORT || 3000
 
 
 //middleware
 app.use(cors({
-    origin: ['http://localhost:3000', 'http://127.0.0.1:5500']
+    origin: ['http://localhost:3000', 'http://127.0.0.1:5500', 'https://notes-app-js.onrender.com']
 }));
 
 app.use(express.json()); //parse incoming JSON from the frontend
@@ -79,6 +79,6 @@ app.delete('/notes/:id', async(req, res) => {
     }
 });
 
-app.listen(3000, () => {
-    console.log('Server is listening on port 3000'); 
+app.listen(PORT, () => {
+    console.log(`Server is listening on port ${PORT}`); 
 });
