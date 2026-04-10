@@ -104,6 +104,7 @@ const submitNote = async (e) => {
             const editCard = document.querySelector(`[data-id=${currentNoteId}]`);
 
             editCard.setAttribute('data-id', cleanInput(editResponseObj.id));
+            editCard.setAttribute('data-category', editResponseObj.notecategory);
             editCard.setAttribute('style', `background: var(--cat-${editResponseObj.notecategory.toLowerCase()}`)
 
             editCard.innerHTML = `
