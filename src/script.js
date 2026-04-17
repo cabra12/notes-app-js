@@ -77,7 +77,7 @@ const filterCards = (type) => {
     document.querySelector('.no-notes-warning')?.remove(); //if not there, it will throw undefined instead of crashing the program
     if(introCard) introCard.style.display = totalCards === 0 ? 'block' : 'none';
 
-    if(!anyVisible) {
+    if(!anyVisible && totalCards > 0) {
         const noNotesDiv = document.createElement('div');
         noNotesDiv.classList.add('no-notes-warning');
         noNotesDiv.textContent = 'No notes match that category';
