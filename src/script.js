@@ -17,7 +17,7 @@ let currentNote;
 let isEditing = false;
 
 filterBtns.forEach(btn => {
-    btn.addEventLisxtener('click', () => {
+    btn.addEventListener('click', () => {
         filterBtns.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         filterCards(btn.dataset.category);
