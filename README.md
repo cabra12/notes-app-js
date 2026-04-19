@@ -1,3 +1,7 @@
+<div style="text-align: center;">
+    <img width="500" src="images/Notes App.png" alt="app showing a few multi-colored notes">
+</div>
+
 # Notes App
 A full-stack notes app with full CRUD functionality. The project was built with vanilla JavaScript, HTML, and CSS on the frontend, and a Node.js/Express RESTful API on the backed connected to a PostgreSQL database. Users can create, view, edit, and delete notes, as well as filter them by category. The project was deployed across Netlify, Render, and Neon.
 
@@ -24,7 +28,7 @@ A full-stack notes app with full CRUD functionality. The project was built with 
 - the frontend code was changed many times so notes would appear properly when there were no notes and when there were notes in the DOM
 - Node.js and Express were added locally, as well as PostgreSQL, to add a backend 
 - cleaned up old code and prevented errors as the project moved from localStorage and arrays to PostgreSQL as the database
-- project had a RESTful API by the end of project
+- project had a RESTful API by the end
 - deployed by connecting Neon, Render, and Netlify to each other 
 - fixed bugs that appeared in deployment but not locally
 
@@ -39,5 +43,5 @@ A full-stack notes app with full CRUD functionality. The project was built with 
 # How it can be improved
 - add message confirming if you would like to delete a card
 - add auth to the project so database can be unique for each viewer
-- add markdown or better formatting to the notes so headings and highlighting can be done in the notes
+- add markdown or better formatting to the notes so bullets and headings can be featured
 

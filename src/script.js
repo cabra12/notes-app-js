@@ -11,14 +11,13 @@ const notesContainer = document.getElementById('notesContainer');
 const categoryBtns = document.querySelectorAll('.cat-btn');
 const filterBtns = document.querySelectorAll('.filter-button');
 
-// let notes = [];
 let selectedCategory = 'Personal';
 let currentNoteId;
 let currentNote;
 let isEditing = false;
 
 filterBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
+    btn.addEventLisxtener('click', () => {
         filterBtns.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         filterCards(btn.dataset.category);
