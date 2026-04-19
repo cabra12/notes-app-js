@@ -341,9 +341,35 @@ header h1::after {
   transform: translateY(-1px);
 }
 
-/* ── Responsive ── */
+/* Loader from css-loaders.com */
+
+/* HTML: <div class="loader"></div> */
+.loader {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: fit-content;
+  font-size: 40px;
+  font-family: system-ui,sans-serif;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #0000;
+  -webkit-text-stroke: 1px #000;
+  background: conic-gradient(#000 0 0) 0/0% 100% no-repeat text;
+  animation: l1 1s linear infinite;
+}
+.loader:before {
+  content: "Loading";
+}
+@keyframes l1 {
+  to{background-size: 120% 100%}
+}
+
+/* Responsive */
 @media (max-width: 600px) {
   header { padding: 20px 24px; }
   header h1 { font-size: 1.4rem; }
   #notesContainer { padding: 24px; gap: 16px; }
 }
+

@@ -30,6 +30,7 @@ app.post('/notes', async(req, res) => {
 });
 
 app.get('/notes', async (req, res) => {
+
     try {
         const allNotes = await pool.query("SELECT * FROM notes");
         res.json(allNotes.rows); 

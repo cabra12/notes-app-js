@@ -11,7 +11,7 @@ const notesContainer = document.getElementById('notesContainer');
 const categoryBtns = document.querySelectorAll('.cat-btn');
 const filterBtns = document.querySelectorAll('.filter-button');
 
-let notes = [];
+// let notes = [];
 let selectedCategory = 'Personal';
 let currentNoteId;
 let currentNote;
@@ -27,7 +27,8 @@ filterBtns.forEach(btn => {
 
 const onLoad = async () => {
     document.querySelectorAll('dialog').forEach(d => d.close());
-
+    document.querySelector('.loader').style.display = 'block';
+    document.body.style.filter = "brightness(40%)";
     try {
         const response = await fetch('https://notes-app-js.onrender.com/notes', { method: 'GET' });
         //get requests don't have headers or body
@@ -41,6 +42,9 @@ const onLoad = async () => {
 
     } catch (error) {
         console.error('Error fetching items:', error);
+    } finally {
+        document.querySelector('.loader').style.display = 'none';
+        document.body.style.filter = "none";
     }
 
     introCardCreate();
@@ -208,9 +212,11 @@ const deleteNote = async (e) => {
 
             document.querySelector(`[data-id=${id}]`).remove();
 
-            if(document.querySelectorAll('.note-card').length === 0) {
-                introCardCreate();
-            }
+            // if(document.querySelectorAll('.note-card').length === 0) {
+            //     introCardCreate();
+            // }
+
+            filterCards('All');
 
         } catch (error) {
             console.error('Error fetching items:', error);
