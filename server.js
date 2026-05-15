@@ -14,6 +14,10 @@ app.use(express.json()); //parse incoming JSON from the frontend
 
 //Routes
 
+app.get('/ping', (req, res) => {
+    res.send('ok');
+});
+
 app.post('/notes', async(req, res) => {
     try {
         const { noteTitle, noteCategory, noteContent } = req.body;
