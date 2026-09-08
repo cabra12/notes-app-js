@@ -1,6 +1,6 @@
 import { createContext } from 'react'
 
-export type Note = {
+export type NoteType = {
     id: string
     text: string
     theme: string
@@ -9,7 +9,7 @@ export type Note = {
 }
 
 export interface NotesContextType {
-    notes: Note[]
+    notes: NoteType[]
     addNote: (theme: string) => void
     deleteNote: (noteId: string) => void
     saveNote: (noteId: string, text: string) => void

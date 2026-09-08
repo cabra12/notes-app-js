@@ -1,5 +1,6 @@
 import { useContext, useState } from 'react'
 import { NotesContext } from '../../context/NotesContext'
+import './style.css'
 
 const colors = ['#ebcfad', '#f5b0a4', '#84dada', '#eff5b1', '#9adbf6']
 

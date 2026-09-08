@@ -1,11 +1,21 @@
 import Sidebar from './components/sidebar'
 import NotesContainer from './components/notes-container'
 import { NotesContext } from './context/NotesContext'
-import type { Note } from './context/NotesContext'
-import { useState } from 'react'
+import type { NoteType } from './context/NotesContext'
+import { useEffect, useState } from 'react'
+import './index.css'
 
 function App() {
-    const [notes, setNotes] = useState<Note[]>([])
+    const [notes, setNotes] = useState<NoteType[]>(() => {
+        const notes = localStorage.getItem('notes-data')
+
+        if (notes) {
+            return JSON.parse(notes)
+        }
+
+        return []
+    })
+
     const addNote = (theme: string) => {
         setNotes([
             {
@@ -26,6 +36,11 @@ function App() {
     const saveNote = (noteId: string, text: string) => {
         setNotes(notes.map((singleNote) => (singleNote.id === noteId ? { ...singleNote, text, editmode: false } : singleNote)))
     }
+
+    useEffect(() => {
+        //add DB/backend?
+        localStorage.setItem('notes-data', JSON.stringify(notes))
+    }, [notes])
 
     const value = {
         notes,

@@ -1,5 +1,7 @@
 import { useContext } from 'react'
 import { NotesContext } from '../../context/NotesContext'
+import Note from '../note'
+import './style.css'
 
 function NotesContainer() {
     const context = useContext(NotesContext)
@@ -12,7 +14,7 @@ function NotesContainer() {
             <h2>Notes</h2>
             <div className="notes-list">
                 {notes.map((note) => (
-                    <div key={note.id}>{note.text}</div>
+                    <Note key={note.id} note={note} />
                 ))}
             </div>
         </div>
