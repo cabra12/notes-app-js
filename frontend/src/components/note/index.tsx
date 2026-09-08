@@ -1,5 +1,5 @@
 import { useContext, useEffect, useRef, useState } from 'react'
-import { NotesContext } from '../../context/NotesContext'
+import { categoryColors, NotesContext } from '../../context/NotesContext'
 import type { NoteType } from '../../context/NotesContext'
 import './styles.css'
 
@@ -18,7 +18,7 @@ function Note({ note }: { note: NoteType }) {
         setIsEditMode(false)
     }
 
-    const getDateString = (timestamp: string) => {
+    const getDateString = (timestamp: number) => {
         const temp = new Date(timestamp).toDateString().split(' ')
         return `${temp[2]} ${temp[1]} ${temp[3]}`
     }
@@ -47,13 +47,13 @@ function Note({ note }: { note: NoteType }) {
     }, [])
 
     return (
-        <div className="note" style={{ background: note.theme }}>
+        <div className="note" style={{ background: categoryColors[note.category] }}>
             <textarea ref={textAreaRef} readOnly={!isEditMode} onChange={(e) => setText(e.target.value)}>
                 {text}
             </textarea>
 
             <div className="footer">
-                <p className="date">{getDateString(`${note.timestamp}`)}</p>
+                <p className="date">{getDateString(note.timestamp)}</p>
                 {!isEditMode && (
                     <button onClick={() => setIsEditMode(true)}>
                         <i className="fa fa-pencil"></i>

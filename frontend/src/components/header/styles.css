@@ -1,0 +1,33 @@
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5em 2em;
+    border-bottom: 1px solid #e0ddd5;
+}
+
+.header h1 {
+    font-family: 'Playfair Display', sans-serif;
+    font-weight: 700;
+    font-size: 3.5em;
+    color: #1a1a1a;
+    margin: 0;
+    letter-spacing: 0.5px;
+}
+
+.header .add-note-btn {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    font-size: 1.3em;
+    background: #e8896a;
+    color: #fff8f2;
+    border: none;
+    border-radius: 8px;
+    padding: 0.5em 1em;
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+
+.header .add-note-btn:hover {
+    background: #d4785a;
+}

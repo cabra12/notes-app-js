@@ -6,10 +6,9 @@
 
 body {
     font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #fffdf7 0%, #fffaeb 20%, #fff6db 45%, #fff0c8 75%);
 }
 
 .notes-app {
-    display: grid;
-    height: 100vh;
-    grid-template-columns: 65px 1fr;
+    min-height: 100vh;
 }

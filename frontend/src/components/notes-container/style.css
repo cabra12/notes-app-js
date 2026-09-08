@@ -2,16 +2,27 @@
     padding: 1.5em;
 }
 
-.notes-app .notes-container h2 {
-    font-size: 1.5em;
-    color: #111;
-}
-
 .notes-app .notes-container .notes-list {
     margin-top: 1em;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1em;
+}
+
+.empty-notes-message {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 60vh;
+    color: #000;
+    font-size: 1.7rem;
+}
+
+.empty-notes-message p {
+    margin: 0.25rem 0;
 }
 
 @media (max-width: 480px) {

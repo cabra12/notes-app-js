@@ -1,11 +1,14 @@
-import Sidebar from './components/sidebar'
 import NotesContainer from './components/notes-container'
 import { NotesContext } from './context/NotesContext'
-import type { NoteType } from './context/NotesContext'
+import type { NoteType, FilterOption, Category } from './context/NotesContext'
 import { useEffect, useState } from 'react'
 import './index.css'
+import Header from './components/header'
+import FilterBar from './components/filter-bar'
 
 function App() {
+    const [activeFilter, setActiveFilter] = useState<FilterOption>('All')
+
     const [notes, setNotes] = useState<NoteType[]>(() => {
         const notes = localStorage.getItem('notes-data')
 
@@ -16,12 +19,13 @@ function App() {
         return []
     })
 
-    const addNote = (theme: string) => {
+    const addNote = (title: string, text: string, category: Category) => {
         setNotes([
             {
                 id: Math.random().toString(36),
-                text: '',
-                theme,
+                title,
+                text,
+                category,
                 timestamp: +new Date(),
                 editmode: true,
             },
@@ -47,12 +51,15 @@ function App() {
         addNote,
         deleteNote,
         saveNote,
+        activeFilter,
+        setActiveFilter,
     }
 
     return (
         <NotesContext.Provider value={value}>
             <div className="notes-app">
-                <Sidebar />
+                <Header />
+                <FilterBar />
                 <NotesContainer />
             </div>
         </NotesContext.Provider>

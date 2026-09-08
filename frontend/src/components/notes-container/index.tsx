@@ -11,11 +11,15 @@ function NotesContainer() {
 
     return (
         <div className="notes-container">
-            <h2>Notes</h2>
             <div className="notes-list">
-                {notes.map((note) => (
-                    <Note key={note.id} note={note} />
-                ))}
+                {notes.length === 0 ? (
+                    <div className="empty-notes-message">
+                        <p>No notes yet.</p>
+                        <p>Click the "Add Note" button to add one!</p>
+                    </div>
+                ) : (
+                    notes.map((note) => <Note key={note.id} note={note} />)
+                )}
             </div>
         </div>
     )
