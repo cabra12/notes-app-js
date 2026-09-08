@@ -4,6 +4,33 @@
     padding: 0.8em 0.8em 0.5em;
     border-radius: 10px;
     box-shadow: 0px 2px 5px 2px rgba(0, 0, 0, 0.1);
+    min-height: 340px;
+}
+
+.note.expanded {
+    height: auto;
+    max-height: none;
+    overflow: visible;
+}
+
+.note-text.clamped {
+    display: -webkit-box;
+    -webkit-line-clamp: 6;
+    line-clamp: 6;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.view-more {
+    background: none;
+    border: none;
+    color: #1a1a1a;
+    font-weight: 600;
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 0;
+    margin-top: 0.9em;
+    align-self: flex-start;
 }
 
 .notes-app .note textarea {
@@ -38,4 +65,21 @@
     border: none;
     outline: none;
     cursor: pointer;
+}
+
+.footer {
+    margin-top: auto;
+}
+
+.note-title,
+.note-text {
+    font-family: 'Patrick Hand', sans-serif;
+}
+
+.note-title {
+    font-size: 2em;
+}
+
+.note-text {
+    font-size: 1.5em;
 }

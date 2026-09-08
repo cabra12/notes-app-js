@@ -5,69 +5,49 @@ import './styles.css'
 
 function Note({ note }: { note: NoteType }) {
     const context = useContext(NotesContext)
-    if (!context) throw new Error('')
+    if (!context) throw new Error('Note must be used within a NotesContext.Provider')
 
-    const { saveNote, deleteNote } = context
+    const { deleteNote, openEditModal } = context
+    const [isExpanded, setIsExpanded] = useState(false)
+    const [isOverflowing, setIsOverflowing] = useState(false)
+    const textRef = useRef<HTMLParagraphElement>(null)
 
-    const [isEditMode, setIsEditMode] = useState(note.editmode)
-    const [text, setText] = useState(note.text)
-    const textAreaRef = useRef<HTMLTextAreaElement>(null)
-
-    const handleSaveNote = () => {
-        saveNote(note.id, text)
-        setIsEditMode(false)
-    }
+    useEffect(() => {
+        const el = textRef.current
+        if (!el) return
+        setIsOverflowing(el.scrollHeight > el.clientHeight)
+    }, [note.text])
 
     const getDateString = (timestamp: number) => {
         const temp = new Date(timestamp).toDateString().split(' ')
         return `${temp[2]} ${temp[1]} ${temp[3]}`
     }
 
-    const adjustTextAreaHeight = () => {
-        if (!textAreaRef.current) return
-
-        textAreaRef.current.style.maxHeight = '1px'
-        textAreaRef.current.style.minHeight = '1px'
-        textAreaRef.current.style.height = '1px'
-
-        textAreaRef.current.style.minHeight = Math.max(textAreaRef.current.scrollHeight, 100) + 'px'
-        textAreaRef.current.style.height = ''
-        textAreaRef.current.style.maxHeight = ''
-    }
-
-    useEffect(() => {
-        adjustTextAreaHeight()
-    }, [text])
-
-    useEffect(() => {
-        window.addEventListener('resize', adjustTextAreaHeight)
-        return () => {
-            window.removeEventListener('resize', adjustTextAreaHeight)
-        }
-    }, [])
-
     return (
-        <div className="note" style={{ background: categoryColors[note.category] }}>
-            <textarea ref={textAreaRef} readOnly={!isEditMode} onChange={(e) => setText(e.target.value)}>
-                {text}
-            </textarea>
+        <div className={`note ${isExpanded ? 'expanded' : ''}`} style={{ background: categoryColors[note.category] }}>
+            <h3 className="note-title">{note.title}</h3>
+            <p ref={textRef} className={`note-text ${isExpanded ? '' : 'clamped'}`}>
+                {note.text}
+            </p>
+
+            {isOverflowing && !isExpanded && (
+                <button className="view-more" onClick={() => setIsExpanded(true)}>
+                    ...View More
+                </button>
+            )}
+            {isOverflowing && isExpanded && (
+                <button className="view-more" onClick={() => setIsExpanded(false)}>
+                    View Less
+                </button>
+            )}
 
             <div className="footer">
                 <p className="date">{getDateString(note.timestamp)}</p>
-                {!isEditMode && (
-                    <button onClick={() => setIsEditMode(true)}>
-                        <i className="fa fa-pencil"></i>
-                    </button>
-                )}
-
-                {isEditMode && (
-                    <button onClick={() => handleSaveNote()}>
-                        <i className="fa fa-save"></i>
-                    </button>
-                )}
-
+                <button onClick={() => openEditModal(note)}>
+                    <i className="fa fa-pencil fa-2x"></i>
+                </button>
                 <button onClick={() => deleteNote(note.id)}>
-                    <i className="fa fa-trash"></i>
+                    <i className="fa fa-trash fa-2x"></i>
                 </button>
             </div>
         </div>

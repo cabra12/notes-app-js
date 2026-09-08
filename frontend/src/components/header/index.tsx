@@ -6,12 +6,14 @@ function Header() {
     const context = useContext(NotesContext)
     if (!context) throw new Error('Header must be used within a NotesContext.Provider')
 
-    const { addNote } = context
+    const { openAddModal } = context
 
     return (
         <div className="header">
-            <h1>Notes App.</h1>
-            <button className="add-note-btn" onClick={() => addNote('New Note', '', 'Personal')}>
+            <h1>
+                Notes App<span className="orange-dot">.</span>
+            </h1>
+            <button className="add-note-btn" onClick={openAddModal}>
                 + Add Note
             </button>
         </div>

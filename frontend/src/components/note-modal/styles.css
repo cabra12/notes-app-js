@@ -1,0 +1,107 @@
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+}
+
+.modal {
+    background: #fff3e0;
+    border-radius: 12px;
+    padding: 2em;
+    width: 90%;
+    max-width: 680px;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.modal h2 {
+    font-family: 'Playfair Display', sans-serif;
+    font-size: 2.3em;
+    font-weight: 700;
+}
+
+.modal label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3em;
+    font-size: 1.1em;
+}
+
+.modal input,
+.modal select {
+    padding: 0.5em;
+    border: 1.5px solid #1a1a1a;
+    border-radius: 8px;
+    /* font-family: inherit; */
+}
+
+.fixed-content {
+    padding: 0.5em;
+    border: 1.5px solid #1a1a1a;
+    border-radius: 8px;
+    height: 220px;
+    resize: none;
+    overflow-y: auto;
+}
+
+.cream-input-background {
+    background: #fffbf3;
+}
+
+.modal input,
+.fixed-content {
+    font-family: 'Patrick Hand', sans-serif;
+    font-size: 1.1em;
+}
+
+.category-bubbles {
+    display: flex;
+    gap: 0.6em;
+    flex-wrap: wrap;
+}
+
+.category-bubble {
+    border: 2px solid transparent;
+    border-radius: 999px;
+    padding: 0.5em 1.1em;
+    font-family: 'Patrick Hand', sans-serif;
+    font-weight: 600;
+    font-size: 1.1em;
+    letter-spacing: 2px;
+    cursor: pointer;
+    color: #1a1a1a;
+    transition: border 0.15s ease;
+}
+
+.category-bubble.active {
+    border-color: #1a1a1a;
+    font-weight: 900;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75em;
+}
+
+.modal-button {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    font-size: 0.9em;
+    background: #ff7e70;
+    color: #fff8f2;
+    border: none;
+    border-radius: 8px;
+    padding: 0.5em 1em;
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+
+.modal-button :hover {
+    background: #d45546;
+}

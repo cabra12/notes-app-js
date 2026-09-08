@@ -3,7 +3,6 @@ import { createContext } from 'react'
 export const categories = ['Personal', 'Work', 'Idea', 'Journal'] as const
 export type Category = (typeof categories)[number]
 
-//an object whose keys are exactly the Category values, and whose values are strings
 export const categoryColors: Record<Category, string> = {
     Personal: '#c2e5df',
     Work: '#f3d4f3',
@@ -31,9 +30,14 @@ export interface NotesContextType {
     notes: NoteType[]
     addNote: (title: string, text: string, category: Category) => void
     deleteNote: (noteId: string) => void
-    saveNote: (noteId: string, text: string) => void
+    saveNote: (noteId: string, title: string, text: string, category: Category) => void
     activeFilter: FilterOption
     setActiveFilter: (filter: FilterOption) => void
+    isModalOpen: boolean
+    editingNote: NoteType | null
+    openAddModal: () => void
+    openEditModal: (note: NoteType) => void
+    closeModal: () => void
 }
 
 export const NotesContext = createContext<NotesContextType | null>(null)

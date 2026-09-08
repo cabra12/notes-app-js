@@ -5,9 +5,12 @@ import { useEffect, useState } from 'react'
 import './index.css'
 import Header from './components/header'
 import FilterBar from './components/filter-bar'
+import NoteModal from './components/note-modal'
 
 function App() {
     const [activeFilter, setActiveFilter] = useState<FilterOption>('All')
+    const [isModalOpen, setIsModalOpen] = useState(false)
+    const [editingNote, setEditingNote] = useState<NoteType | null>(null)
 
     const [notes, setNotes] = useState<NoteType[]>(() => {
         const notes = localStorage.getItem('notes-data')
@@ -27,7 +30,7 @@ function App() {
                 text,
                 category,
                 timestamp: +new Date(),
-                editmode: true,
+                editmode: false,
             },
             ...notes,
         ])
@@ -37,8 +40,23 @@ function App() {
         setNotes(notes.filter((note) => note.id !== noteId))
     }
 
-    const saveNote = (noteId: string, text: string) => {
-        setNotes(notes.map((singleNote) => (singleNote.id === noteId ? { ...singleNote, text, editmode: false } : singleNote)))
+    const saveNote = (noteId: string, title: string, text: string, category: Category) => {
+        setNotes(notes.map((singleNote) => (singleNote.id === noteId ? { ...singleNote, title, text, category, editmode: false } : singleNote)))
+    }
+
+    const openAddModal = () => {
+        setEditingNote(null)
+        setIsModalOpen(true)
+    }
+
+    const openEditModal = (note: NoteType) => {
+        setEditingNote(note)
+        setIsModalOpen(true)
+    }
+
+    const closeModal = () => {
+        setIsModalOpen(false)
+        setEditingNote(null)
     }
 
     useEffect(() => {
@@ -53,6 +71,11 @@ function App() {
         saveNote,
         activeFilter,
         setActiveFilter,
+        isModalOpen,
+        editingNote,
+        openAddModal,
+        openEditModal,
+        closeModal,
     }
 
     return (
@@ -61,6 +84,7 @@ function App() {
                 <Header />
                 <FilterBar />
                 <NotesContainer />
+                {isModalOpen && <NoteModal key={editingNote?.id ?? 'new'} />}
             </div>
         </NotesContext.Provider>
     )
