@@ -1,47 +1,71 @@
 <div style="text-align: center;">
-    <img width="500" src="images/Notes App.png" alt="app showing a few multi-colored notes">
+    <img width="650" src="images/Note-pic.png" alt="app showing a few multi-colored notes">
 </div>
 
 # Notes App
-A full-stack notes app with full CRUD functionality. The project was built with vanilla JavaScript, HTML, and CSS on the frontend, and a Node.js/Express RESTful API on the backed connected to a PostgreSQL database. Users can create, view, edit, and delete notes, as well as filter them by category. The project was deployed across Netlify, Render, and Neon.
+
+A full-stack notes app with full CRUD functionality. It's built with React + TypeScript on the frontend, Node.js/Express on the backend, and PostgreSQL (hosted on Neon) for persistence. Originally built as a vanilla JavaScript app, then migrated to a typed React architecture.
 
 ## Live Demo
+
 [View Site](https://notes-app-jsadd.netlify.app/)
 
-# Technologies
-- HTML5
-- CSS3
-- Vanilla JavaScript (ES6+)
-- Node.js/Express
-- PostgreSQL
-- Netlify (frontend deployment)
-- Render (backend deployment)
-- Neon (cloud PostgreSQL hosting)
+## Features
 
-# Features
-- the user will be able to create, view, edit, and delete notes
-- any changes will be reflected in the database
-- users can also filter notes by category, and edited notes update their category for filtering immediately
+- Create, edit, and delete notes with a title, body, and category
+- Filter notes by category, with dynamic category-colored UI
+- Collapsible/expandable note cards with automatic overflow detection (only shows "View More" when text actually overflows)
+- Persistent storage via a PostgreSQL database
+- User-facing error handling for failed network requests
+- Responsive grid layout
 
-# Process of Creating the Project
-- started as frontend project with just vanilla JS, html and css with localStorage persistence as a database
-- the frontend code was changed many times so notes would appear properly when there were no notes and when there were notes in the DOM
-- Node.js and Express were added locally, as well as PostgreSQL, to add a backend 
-- cleaned up old code and prevented errors as the project moved from localStorage and arrays to PostgreSQL as the database
-- project had a RESTful API by the end
-- deployed by connecting Neon, Render, and Netlify to each other 
-- fixed bugs that appeared in deployment but not locally
+## Tech Stack
 
-# What I learned
-- how to create a unique ID with vanilla JavaScript using Date.now().toString(36)
-- how to create a RESTful API in the backend 
-- how to convert a frontend project to a full stack project
-- what code should appear in the frontend or in the backend
-- how to filter items that appear in the DOM without an array
-- connecting the backend and frontend through fetch and the GET, POST, PUT, and DELETE methods
+- **Frontend:** React, TypeScript, Vite, CSS
+- **Backend:** Node.js, Express
+- **Database:** PostgreSQL (Neon, serverless)
+- **Deployment:** Netlify (frontend), Render (backend)
+
+## Architecture
+
+```
+frontend/          React + TypeScript app (Vite)
+  src/
+    components/    Header, FilterBar, Note, NoteModal, NotesContainer, ErrorBanner
+    context/       NotesContext (shared state, avoids prop drilling)
+
+server.js          Express API (CRUD routes for /notes)
+config/db.js       PostgreSQL connection pool (via pg)
+```
+
+**API Endpoints:**
+| Method | Route | Description |
+|--------|-------|-------------|
+| GET | `/notes` | Fetch all notes |
+| GET | `/notes/:id` | Fetch a single note |
+| POST | `/notes` | Create a note |
+| PUT | `/notes/:id` | Update a note |
+| DELETE | `/notes/:id` | Delete a note |
+
+## Running Locally
+
+**Backend:**
+
+```bash
+npm install
+npm run dev
+```
+
+**Frontend:**
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
 
 # How it can be improved
+
 - add message confirming if you would like to delete a card
 - add auth to the project so database can be unique for each viewer
 - add markdown or better formatting to the notes so bullets and headings can be featured
-
