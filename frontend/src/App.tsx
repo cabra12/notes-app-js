@@ -6,6 +6,7 @@ import './index.css'
 import Header from './components/header'
 import FilterBar from './components/filter-bar'
 import NoteModal from './components/note-modal'
+import ErrorBanner from './components/error-banner'
 
 //swap this for Render URL when deployed
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000'
@@ -36,6 +37,7 @@ function App() {
 
     //notes now starts as an empty array instead of reading from localStorage.
     const [notes, setNotes] = useState<NoteType[]>([])
+    const [error, setError] = useState<string | null>(null)
 
     //on first render, fetch all notes from the backend and populate state.
     useEffect(() => {
@@ -44,7 +46,10 @@ function App() {
             .then((data: DbNoteType[]) => {
                 setNotes(data.map(mapDbNoteToNoteType))
             })
-            .catch((error) => console.error('Failed to fetch notes:', error))
+            .catch((err) => {
+                console.error('Failed to fetch notes:', err)
+                setError('Failed to load notes. Please refresh the page.')
+            })
     }, [])
 
     //addNote is now async and calls the backend via POST instead of just updating local state directly.
@@ -60,8 +65,10 @@ function App() {
             const data = await res.json()
             const newNote = mapDbNoteToNoteType(data.note)
             setNotes([newNote, ...notes])
-        } catch (error) {
-            console.error('Failed to add note:', error)
+            setActiveFilter('All')
+        } catch (err) {
+            console.error('Failed to add note:', err)
+            setError('Failed to add note. Please try again.')
         }
     }
 
@@ -70,8 +77,9 @@ function App() {
         try {
             await fetch(`${API_URL}/notes/${noteId}`, { method: 'DELETE' })
             setNotes(notes.filter((note) => note.id !== noteId))
-        } catch (error) {
-            console.error('Failed to delete note:', error)
+        } catch (err) {
+            console.error('Failed to delete note:', err)
+            setError('Failed to delete note. Please try again.')
         }
     }
 
@@ -86,8 +94,9 @@ function App() {
             const data = await res.json()
             const updatedNote = mapDbNoteToNoteType(data.note)
             setNotes(notes.map((note) => (note.id === noteId ? updatedNote : note)))
-        } catch (error) {
-            console.error('Failed to save note:', error)
+        } catch (err) {
+            console.error('Failed to save note:', err)
+            setError('Failed to save note. Please try again.')
         }
     }
 
@@ -124,6 +133,7 @@ function App() {
         <NotesContext.Provider value={value}>
             <div className="notes-app">
                 <Header />
+                {error && <ErrorBanner message={error} onDismiss={() => setError(null)} />}
                 <FilterBar />
                 <NotesContainer />
                 {isModalOpen && <NoteModal key={editingNote?.id ?? 'new'} />}
