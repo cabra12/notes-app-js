@@ -18,13 +18,13 @@ const limiter = rateLimit({
 //middleware
 app.use(helmet())
 
-app.use(limiter)
-
 app.use(
     cors({
         origin: ['http://localhost:3000', 'http://localhost:5173', 'http://127.0.0.1:5500', 'https://notes-app-js.onrender.com', 'https://notes-app-jsadd.netlify.app'],
     }),
 )
+
+app.use(limiter)
 
 app.use(express.json()) //parse incoming JSON from the frontend
 
