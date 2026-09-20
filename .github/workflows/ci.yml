@@ -1,0 +1,36 @@
+name: CI
+
+on:
+    push:
+        branches: [main]
+    pull_request:
+
+jobs:
+    backend:
+        runs-on: ubuntu-latest
+        services:
+            postgres:
+                image: postgres:16
+                env:
+                    POSTGRES_PASSWORD: test
+                    POSTGRES_DB: notes_test
+                ports:
+                    - 5432:5432
+                options: >-
+                    --health-cmd pg_isready
+                    --health-interval 5s
+                    --health-retries 5
+        env:
+            TEST_DATABASE_URL: postgres://postgres:test@localhost:5432/notes_test
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 22
+                  cache: npm
+            - run: npm ci
+            - name: Create notes table
+              run: >
+                  psql "$TEST_DATABASE_URL" -c
+                  "CREATE TABLE notes (id VARCHAR NOT NULL PRIMARY KEY, notetitle VARCHAR, notecategory VARCHAR, notecontent TEXT);"
+            - run: npm test
